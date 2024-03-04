@@ -1,3 +1,4 @@
+using System;
 using Core;
 using TMPro;
 using UnityEngine;
@@ -8,12 +9,13 @@ namespace Game
     {
         [SerializeField] private GameResource resourceType;
         [SerializeField] private TextMeshProUGUI textComponent;
+        [SerializeField] private ResourceBank resourceBank;
         private ObservableInt _resourceValue;
-        private ResourceBank _resourceBank;
 
         private void Start()
         {
-            _resourceValue = _resourceBank.GetResource(resourceType);
+            resourceBank = FindObjectOfType<ResourceBank>();
+            _resourceValue = resourceBank.GetResource(resourceType);
             
             _resourceValue.OnValueChanged += UpdateText;
             

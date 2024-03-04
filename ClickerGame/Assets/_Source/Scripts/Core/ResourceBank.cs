@@ -6,24 +6,24 @@ namespace Core
 {
     public class ResourceBank : MonoBehaviour
     {
-        private Dictionary<GameResource, ObservableInt> _resources = new ();
+        private readonly Dictionary<GameResource, ObservableInt> _resourceDictionary = new ();
 
-        void Start()
+        private void Awake()
         {
             foreach (GameResource resource in Enum.GetValues(typeof(GameResource)))
             {
-                _resources.Add(resource, new ObservableInt(0));
+                _resourceDictionary.Add(resource, new ObservableInt(0));
             }
         }
 
         public void ChangeResource(GameResource r, int v)
         {
-            _resources[r].Value += v;
+            _resourceDictionary[r].Value += v;
         }
 
         public ObservableInt GetResource(GameResource r)
         {
-            return _resources[r];
+            return _resourceDictionary[r];
         }
     }
 }
