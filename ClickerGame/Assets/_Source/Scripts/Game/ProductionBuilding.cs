@@ -1,21 +1,21 @@
 using Core;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ProductionBuilding : MonoBehaviour
 {
     [SerializeField] private GameResource producedResource;
-    [SerializeField] private float productionTime = 3f;
+    [SerializeField] private float baseProductionTime = 3f;
     [SerializeField] private Button productionButton;
     [SerializeField] private Slider progressSlider;
 
-    private ResourceBank _resourceBank;
+    [SerializeField] private ResourceBank resourceBank;
     private bool _isProducing;
 
     private void Start()
     {
-        _resourceBank = FindObjectOfType<ResourceBank>();
         productionButton.onClick.AddListener(StartProduction);
     }
 
@@ -32,6 +32,12 @@ public class ProductionBuilding : MonoBehaviour
         _isProducing = true;
         productionButton.interactable = false;
 
+        ObservableInt prodLvl = resourceBank.GetResource(producedResource);
+
+        float prodLvlMultiplier = 1 - (prodLvl.Value / 100f);
+
+        float productionTime = baseProductionTime * prodLvlMultiplier;
+
         float timer = 0f;
 
         while (timer < productionTime)
@@ -41,7 +47,7 @@ public class ProductionBuilding : MonoBehaviour
             yield return null;
         }
 
-        _resourceBank.ChangeResource(producedResource, 1);
+        resourceBank.ChangeResource(producedResource, 1);
 
         _isProducing = false;
         productionButton.interactable = true;

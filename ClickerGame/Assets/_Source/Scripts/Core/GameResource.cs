@@ -7,5 +7,10 @@ namespace Core
         Wood,
         Stone,
         Gold,
+        HumansProdLvl,
+        FoodProdLvl,
+        WoodProdLvl,
+        StoneProdLvl,
+        GoldProdLvl
     }
 }
